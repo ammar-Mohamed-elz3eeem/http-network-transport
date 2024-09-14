@@ -190,7 +190,77 @@ TEST(HTTPServerNetworkTransportTests, ReleaseNetwork)
 	);
 }
 
-TEST(HTTPServerNetworkTransportTests, Placeholder)
+TEST(HTTPServerNetworkTransportTests, DataTransmissionFromClient)
 {
-	ASSERT_TRUE(true);
+	HTTPNetworkTransport::HTTPServerNetworkTransport transport;
+	Owner owner;
+	ASSERT_TRUE(
+		transport.bindNetwork(
+			0,
+			[&owner](std::shared_ptr<HTTP::Connection> connection)
+			{
+				owner.connectionDelegate(connection);
+			}
+		)
+	);
+
+	const auto port = transport.getBoundPort();
+	SystemAbstractions::NetworkConnection client;
+	(void)client.Connect(0x7F000001, port);
+	ASSERT_TRUE(
+		client.Process(
+			[](const std::vector<uint8_t> &message) {
+			},
+			[](bool graceful) {
+			}
+		)
+	);
+	(void)owner.awaitConnection();
+	const std::string messageAsString = "Hello, world\r\n";
+	const std::vector<uint8_t> messageAsBytes(
+		messageAsString.begin(),
+		messageAsString.end()
+	);
+	client.SendMessage(messageAsBytes);
+	ASSERT_TRUE(owner.awaitMessage(messageAsBytes.size()));
+	ASSERT_EQ(owner.dataReceived, messageAsBytes);
+}
+
+TEST(HTTPServerNetworkTransportTests, DataTransmissionToClient)
+{
+	HTTPNetworkTransport::HTTPServerNetworkTransport transport;
+	Owner owner;
+	ASSERT_TRUE(
+		transport.bindNetwork(
+			0,
+			[&owner](std::shared_ptr<HTTP::Connection> connection)
+			{
+				owner.connectionDelegate(connection);
+			}
+		)
+	);
+
+	const auto port = transport.getBoundPort();
+	SystemAbstractions::NetworkConnection client;
+	(void)client.Connect(0x7F000001, port);
+	ASSERT_TRUE(
+		client.Process(
+			[&owner](const std::vector<uint8_t> &message)
+			{
+				owner.receivingMessageDelegate(message);
+			},
+			[](bool graceful) {
+			}
+		)
+	);
+	(void)owner.awaitConnection();
+	const std::string responseAsString = "HTTP/1.1 404 Not Found\r\n";
+	const std::vector<uint8_t> responseAsBytes(
+		responseAsString.begin(),
+		responseAsString.end()
+	);
+	// client.SendMessage(messageAsBytes);
+	owner.connections[0]->sendData(responseAsBytes);
+	ASSERT_TRUE(owner.awaitMessage(responseAsBytes.size()));
+	ASSERT_EQ(owner.dataReceived, responseAsBytes);
 }
