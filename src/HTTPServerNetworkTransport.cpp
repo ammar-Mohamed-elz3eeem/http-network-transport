@@ -16,10 +16,20 @@ namespace HTTPNetworkTransport
 {
 	/**
 	 * @brief
-	 *     This contains all private properties of the client class.
+	 *     This contains all private properties of the
+	 *     HTTPServerNetworkTransport class.
 	 */
 	struct HTTPServerNetworkTransport::Impl
 	{
+		// Properties
+
+		/**
+		 * @brief
+		 *     This is used to implement the transport layer.
+		 */
+		SystemAbstractions::NetworkEndpoint endpoint;
+
+		// Methods
 	};
 
 	HTTPServerNetworkTransport::~HTTPServerNetworkTransport() = default;
