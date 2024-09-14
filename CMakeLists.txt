@@ -7,11 +7,11 @@ cmake_minimum_required(VERSION 3.8)
 set(This HTTPNetworkTransport)
 
 set(Headers
-    include/HTTPNetworkTransport/HTTPNetworkTransport.hpp
+    include/HTTPNetworkTransport/HTTPServerNetworkTransport.hpp
 )
 
 set(Sources
-    src/HTTPNetworkTransport.cpp
+    src/HTTPServerNetworkTransport.cpp
 )
 
 add_library(${This} STATIC ${Sources} ${Headers})

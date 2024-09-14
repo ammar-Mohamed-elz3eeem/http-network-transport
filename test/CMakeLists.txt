@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.8)
 set(This HTTPNetworkTransportTests)
 
 set(Sources
-    src/HTTPNetworkTransportTests.cpp
+    src/HTTPServerNetworkTransportTests.cpp
 )
 
 add_executable(${This} ${Sources})

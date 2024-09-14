@@ -10,7 +10,7 @@
  * @copyright: Copyright (c) 2024
  */
 
-#include <HTTPNetworkTransport/HTTPNetworkTransport.hpp>
+#include <HTTPNetworkTransport/HTTPServerNetworkTransport.hpp>
 
 namespace HTTPNetworkTransport
 {
