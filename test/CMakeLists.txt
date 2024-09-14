@@ -22,6 +22,8 @@ target_link_libraries(${This} PUBLIC
     gtest_main
     gtest
     HTTPNetworkTransport
+    HTTP
+    SystemAbstractions
 )
 
 add_test(
