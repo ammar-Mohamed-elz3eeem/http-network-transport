@@ -3,7 +3,8 @@
  * @author: Ammar Massoud (ammar@wpkama.com)
  * 
  * @brief
- *     This file implements class HTTPNetworkTransport::HTTPNetworkTransport
+ *     This file implements class 
+ *     HTTPNetworkTransport::HTTPServerNetworkTransport
  * 
  * @version: 1.0.0
  * @date: 2024-07-28
