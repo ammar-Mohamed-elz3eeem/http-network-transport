@@ -26,4 +26,47 @@ namespace HTTPNetworkTransport
 
 	HTTPServerNetworkTransport::HTTPServerNetworkTransport(): impl_(new Impl())
 	{}
+
+	bool HTTPServerNetworkTransport::bindNetwork(
+		uint16_t port,
+		NewConnectionDelegate newConnectionDelegate
+	) {
+		return impl_->endpoint.Open(
+			[this, newConnectionDelegate](std::shared_ptr<SystemAbstractions::NetworkConnection> newConnection)
+			{
+				const auto adapter = std::make_shared<ConnectionAdapter>();
+				adapter->adaptee = newConnection;
+				if (!adapter->wireUpAdapter())
+					return;
+				newConnectionDelegate(adapter);
+			},
+			[this](
+				uint32_t address,
+				uint16_t port,
+				const std::vector<uint8_t> &body) {
+				// NODE: This function we never be called, because it's only
+				// used in datagram-oriented network endpoints, and this explicitly
+				// configured to be a connection-oriented endpoint.
+			},
+			SystemAbstractions::NetworkEndpoint::Mode::Connection,
+			0,
+			0,
+			port);
+	}
+
+	void HTTPServerNetworkTransport::releaseNetwork()
+	{
+		impl_->endpoint.Close();
+	}
+
+	void HTTPServerNetworkTransport::setNewConnectionDelegate(
+		NewConnectionDelegate delegate
+	) {
+
+	}
+
+	uint16_t HTTPServerNetworkTransport::getBoundPort()
+	{
+		return impl_->endpoint.GetBoundPort();
+	}
 } // namespace HTTPNetworkTransport
