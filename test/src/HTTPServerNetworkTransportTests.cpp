@@ -139,6 +139,32 @@ namespace {
 	};
 }
 
+TEST(HTTPServerNetworkTransportTests, BindNetwork)
+{
+	HTTPNetworkTransport::HTTPServerNetworkTransport transport;
+	Owner owner;
+	ASSERT_TRUE(
+		transport.bindNetwork(
+			0,
+			[&owner](std::shared_ptr<HTTP::Connection> connection)
+			{
+				owner.connectionDelegate(connection);
+			}
+		)
+	);
+
+	const auto port = transport.getBoundPort();
+	SystemAbstractions::NetworkConnection client;
+	ASSERT_TRUE(
+		client.Connect(
+			0x7F000001,
+			port
+		)
+	);
+	
+	ASSERT_TRUE(owner.awaitConnection());
+}
+
 
 TEST(HTTPServerNetworkTransportTests, Placeholder)
 {
