@@ -4,7 +4,7 @@
 # © 2018 by Richard Walters
 
 cmake_minimum_required(VERSION 3.8)
-set(This Uri)
+set(This HTTPNetworkTransport)
 
 set(Headers
     include/HTTPNetworkTransport/HTTPNetworkTransport.hpp
