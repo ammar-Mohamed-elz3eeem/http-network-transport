@@ -165,6 +165,30 @@ TEST(HTTPServerNetworkTransportTests, BindNetwork)
 	ASSERT_TRUE(owner.awaitConnection());
 }
 
+TEST(HTTPServerNetworkTransportTests, ReleaseNetwork)
+{
+	HTTPNetworkTransport::HTTPServerNetworkTransport transport;
+	Owner owner;
+	ASSERT_TRUE(
+		transport.bindNetwork(
+			0,
+			[&owner](std::shared_ptr<HTTP::Connection> connection)
+			{
+				owner.connectionDelegate(connection);
+			}
+		)
+	);
+
+	const auto port = transport.getBoundPort();
+	transport.releaseNetwork();
+	SystemAbstractions::NetworkConnection client;
+	ASSERT_FALSE(
+		client.Connect(
+			0x7F000001,
+			port
+		)
+	);
+}
 
 TEST(HTTPServerNetworkTransportTests, Placeholder)
 {
