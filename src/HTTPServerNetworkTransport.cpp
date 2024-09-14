@@ -18,12 +18,12 @@ namespace HTTPNetworkTransport
 	 * @brief
 	 *     This contains all private properties of the client class.
 	 */
-	struct HTTPNetworkTransport::Impl
+	struct HTTPServerNetworkTransport::Impl
 	{
 	};
 
-	HTTPNetworkTransport::~HTTPNetworkTransport() = default;
+	HTTPServerNetworkTransport::~HTTPServerNetworkTransport() = default;
 
-	HTTPNetworkTransport::HTTPNetworkTransport(): impl_(new Impl())
+	HTTPServerNetworkTransport::HTTPServerNetworkTransport(): impl_(new Impl())
 	{}
 } // namespace HTTPNetworkTransport

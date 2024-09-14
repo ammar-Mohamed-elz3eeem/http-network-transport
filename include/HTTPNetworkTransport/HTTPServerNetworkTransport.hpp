@@ -17,36 +17,36 @@
 
 namespace HTTPNetworkTransport
 {
-	class HTTPNetworkTransport
+	class HTTPServerNetworkTransport
 	{
 	public:
 		// Lifecycle Management
-		~HTTPNetworkTransport() noexcept;
-		HTTPNetworkTransport(const HTTPNetworkTransport &) noexcept = delete;
-		HTTPNetworkTransport(HTTPNetworkTransport &&) noexcept = delete;
-		HTTPNetworkTransport &operator=(const HTTPNetworkTransport &) noexcept = delete;
-		HTTPNetworkTransport &operator=(HTTPNetworkTransport &&) noexcept = delete;
+		~HTTPServerNetworkTransport() noexcept;
+		HTTPServerNetworkTransport(const HTTPServerNetworkTransport &) noexcept = delete;
+		HTTPServerNetworkTransport(HTTPServerNetworkTransport &&) noexcept = delete;
+		HTTPServerNetworkTransport &operator=(const HTTPServerNetworkTransport &) noexcept = delete;
+		HTTPServerNetworkTransport &operator=(HTTPServerNetworkTransport &&) noexcept = delete;
 
 		// Public Methods
 
 		/**
 		 * @brief
-		 *     Construct a new HTTPNetworkTransport object
+		 *     Construct a new HTTPServerNetworkTransport object
 		 */
-		HTTPNetworkTransport();
+		HTTPServerNetworkTransport();
 
 	private:
 		// Private Properties
 		/**
 		 * @brief
 		 *     structure to hold all the private properties of the
-		 *     HTTPNetworkTransport instance.
+		 *     HTTPServerNetworkTransport instance.
 		 */
 		struct Impl;
 
 		/**
 		 * @brief
-		 *     This contains all private properties of the HTTPNetworkTransport
+		 *     This contains all private properties of the HTTPServerNetworkTransport
 		 *     class.
 		 */
 		std::unique_ptr<struct Impl> impl_;
