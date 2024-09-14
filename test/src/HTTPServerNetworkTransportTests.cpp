@@ -10,7 +10,6 @@
  * @copyright: Copyright (c) 2024
  */
 
-#include <gtest/gtest.h>
 #include <HTTPNetworkTransport/HTTPServerNetworkTransport.hpp>
 #include <SystemAbstractions/NetworkConnection.hpp>
 #include <HTTP/Connection.hpp>
