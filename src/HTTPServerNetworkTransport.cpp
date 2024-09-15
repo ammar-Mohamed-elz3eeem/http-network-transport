@@ -83,6 +83,28 @@ namespace {
 
 		/**
 		 * @brief
+		 *     This method returns a string that represents a unique
+		 *     identifier for the peer of this connection in the context
+		 *     of the transport.
+		 * 
+		 * @return
+		 *     A string that represents a unique identifier for
+		 *     the peer of this connection in the context of
+		 *     the transport.
+		 */
+		virtual std::string getPeerID() override {
+			return StringExtensions::sprintf(
+				"%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 ":%" PRIu16,
+				(uint8_t)((adaptee->GetPeerAddress() >> 24) & 0xFF),
+				(uint8_t)((adaptee->GetPeerAddress() >> 16) & 0xFF),
+				(uint8_t)((adaptee->GetPeerAddress() >> 8) & 0xFF),
+				(uint8_t)((adaptee->GetPeerAddress()) & 0xFF),
+				adaptee->GetPeerPort()
+			);
+		};
+
+		/**
+		 * @brief
 		 *     This method sets the callback to call whenever data is received
 		 *     from the remote peer.
 		 * 
