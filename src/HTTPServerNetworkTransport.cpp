@@ -190,9 +190,9 @@ namespace HTTPNetworkTransport
 			{
 				const auto adapter = std::make_shared<ConnectionAdapter>();
 				adapter->adaptee = newConnection;
+				newConnectionDelegate(adapter);
 				if (!adapter->wireUpAdapter())
 					return;
-				newConnectionDelegate(adapter);
 			},
 			[this](
 				uint32_t address,

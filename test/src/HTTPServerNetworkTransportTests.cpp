@@ -274,3 +274,39 @@ TEST(HTTPServerNetworkTransportTests, DataTransmissionToClient)
 	ASSERT_TRUE(owner.awaitMessage(responseAsBytes.size()));
 	ASSERT_EQ(owner.dataReceived, responseAsBytes);
 }
+
+TEST(HTTPServerNetworkTransportTests, DataReceivedShouldNotRaceConnectionDelegate)
+{
+	HTTPNetworkTransport::HTTPServerNetworkTransport transport;
+	Owner owner;
+	ASSERT_TRUE(
+		transport.bindNetwork(
+			0,
+			[&owner](std::shared_ptr<HTTP::Connection> connection)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				owner.connectionDelegate(connection);
+			}
+		)
+	);
+
+	const auto port = transport.getBoundPort();
+	SystemAbstractions::NetworkConnection client;
+	(void)client.Connect(0x7F000001, port);
+	ASSERT_TRUE(
+		client.Process(
+			[](const std::vector<uint8_t> &message) {
+			},
+			[](bool graceful) {
+			}
+		)
+	);
+	const std::string messageAsString = "Hello, world\r\n";
+	const std::vector<uint8_t> messageAsBytes(
+		messageAsString.begin(),
+		messageAsString.end()
+	);
+	client.SendMessage(messageAsBytes);
+	ASSERT_TRUE(owner.awaitMessage(messageAsBytes.size()));
+	ASSERT_EQ(owner.dataReceived, messageAsBytes);
+}
