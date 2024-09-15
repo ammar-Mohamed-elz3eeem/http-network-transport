@@ -13,6 +13,8 @@
 
 #include <HTTPNetworkTransport/HTTPServerNetworkTransport.hpp>
 #include <SystemAbstractions/NetworkEndpoint.hpp>
+#include <StringExtensions/StringExtensions.hpp>
+#include <inttypes.h>
 
 namespace {
 	/**
