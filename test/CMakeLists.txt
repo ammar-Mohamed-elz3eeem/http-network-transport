@@ -24,6 +24,7 @@ target_link_libraries(${This} PUBLIC
     HTTPNetworkTransport
     HTTP
     SystemAbstractions
+    StringExtensions
 )
 
 add_test(

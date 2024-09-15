@@ -12,11 +12,13 @@
 
 #include <HTTPNetworkTransport/HTTPServerNetworkTransport.hpp>
 #include <SystemAbstractions/NetworkConnection.hpp>
+#include <StringExtensions/StringExtensions.hpp>
 #include <HTTP/Connection.hpp>
 #include <condition_variable>
 #include <gtest/gtest.h>
 #include <vector>
 #include <mutex>
+#include <inttypes.h>
 
 namespace {
 	struct Owner
@@ -216,6 +218,14 @@ TEST(HTTPServerNetworkTransportTests, DataTransmissionFromClient)
 		)
 	);
 	(void)owner.awaitConnection();
+
+	ASSERT_EQ(
+		StringExtensions::sprintf(
+			"127.0.0.1:%" PRIu16,
+			client.GetBoundPort()
+		),
+		owner.connections[0]->getPeerID()
+	);
 	const std::string messageAsString = "Hello, world\r\n";
 	const std::vector<uint8_t> messageAsBytes(
 		messageAsString.begin(),
